@@ -55,12 +55,57 @@ int search(vector<int>& v, int target)
 	}
 }
 
+int search2(vector<int>& v, int target)
+{
+	int len = v.size();
+	int lo = 0;
+	int hi = len - 1;
+	while(lo <= hi)
+	{
+		int mid = lo + (hi - lo) / 2;
+		if (v[mid] == target)
+			return mid;
+		if (v[mid] >= v[lo])
+		{
+			if(target >= v[lo] && target < v[mid])
+				hi = mid - 1;
+			else
+				lo = mid + 1;
+			continue;
+		}
+		else if (v[mid] <= v[hi])
+		{
+			if (target < v[mid] || target >= v[lo])
+				hi = mid - 1;
+			else
+				lo = mid + 1;
+		}
+	}
+	return -1;
+}
+
+
 int main()
 {
 	vector<int> v1 = {1,2,3,4,5,6,7,8};
-	vector<int> v2 = {5};
-	cout << search(v1, 4) << endl;
-	cout << search(v1, 10) << endl;
-	cout << search(v2, 5) << endl;
-	cout << search(v2, 4) << endl;
+	vector<int> v2 = {5,1,3};
+	cout << search2(v1, 1) << endl;
+	cout << search2(v1, 2) << endl;
+	cout << search2(v1, 3) << endl;
+	cout << search2(v1, 4) << endl;
+	cout << search2(v1, 5) << endl;
+	cout << search2(v1, 6) << endl;
+
+	cout << search2(v1, 10) << endl;
+
+	cout << search2(v2, 5) << endl;
+	cout << search2(v2, 2) << endl;
 }
+
+
+
+
+
+
+
+

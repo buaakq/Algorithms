@@ -3,26 +3,35 @@
 
 using namespace std;
 
-bool search(vector<int>& A, int target) {
-    int n = A.size();
-    int lo =0, hi = n-1;
+bool search(vector<int>& v, int target) {
+    int len = v.size();
+    int lo =0, hi = len - 1;
     int mid = 0;
-    while(lo<hi){
-          mid=(lo+hi)/2;
-          if(A[mid]==target) return true;
-          if(A[mid]>A[hi]){
-              if(A[mid]>target && A[lo] <= target) hi = mid;
-              else lo = mid + 1;
-          }else if(A[mid] < A[hi]){
-              if(A[mid]<target && A[hi] >= target) lo = mid + 1;
-              else hi = mid;
-          }else{
-              hi--;
-          }
-          
+    while(lo <= hi){
+        int mid = lo + (hi-lo) / 2;
+        if (v[mid] == target)
+            return true;
+        if (v[mid] > v[lo])
+        {
+            if (target >= v[lo] && target < v[mid])
+               hi = mid - 1;
+            else
+               lo = mid + 1;
+        }
+        else if (v[mid] < v[lo])
+        {
+            if (target > v[mid] && target <= v[hi])
+               lo = mid + 1;
+             else
+                hi = mid - 1;
+        }
+        else
+        {
+            lo ++;
+        }
     }
-    return A[lo] == target ? true : false;
-  }
+    return false;
+}
 
 int main()
 {
