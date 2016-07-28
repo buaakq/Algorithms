@@ -35,6 +35,10 @@ class BTree{
     	void level();
     	void display();
         std::string serialise(); 
+        int height()
+        {
+            return height_helper(this->root);
+        }
         BTreeNode * get_root(){return root;}
 
     private:
