@@ -68,7 +68,9 @@ def shell_sort(nums):
               break
      k = k // 3
 
-# TODO
+# NlogN time complexity
+# N space complexity
+# Stable sort
 def merge_sort(nums):
    def merge(nums, copy, left, mid, right):
       assert(mid <= right)
