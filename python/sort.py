@@ -1,5 +1,8 @@
 #!/usr/bin/python3.6
 
+
+# Reference: https://blog.csdn.net/qq_30534935/article/details/82531311
+
 def is_sorted(nums):
    for i in range(len(nums) - 1):
       if nums[i] > nums[i+1]:
