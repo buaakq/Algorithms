@@ -143,6 +143,30 @@ def quick_sort(nums):
 
    quick_sort_helper(nums, 0, len(nums) - 1)
 
+# assuming nums has a padding nums[0], real data is in nums[1] ~ nums[N]
+# where N is number of read data, i.e., len(nums) - 1
+# pros: fast, O(NlogN) time, O(1) space
+# cons: cannot leverage cache (swap data[k] and data[k * 2], which are far
+#       from each other
+def heap_sort(nums):
+   n = len(nums) - 1
+   def sink(nums, k, N):
+      while k * 2 <= N:
+         j = k * 2
+         if j < N and nums[j] < nums[j + 1]:
+            j += 1
+         if nums[k] > nums[j]:
+            break
+         swap(nums, k, j)
+         k = j
+
+   for i in reversed(range(1, n//2+1)):
+      sink(nums, i, n)
+
+   while n > 1:
+      swap(nums, 1, n)
+      n -= 1
+      sink(nums, 1, n)
 
 if __name__ == "__main__":
    nums = [4,1,3,4,5,11,1,2, 10,111, 3, 6]
@@ -153,7 +177,10 @@ if __name__ == "__main__":
    #bubble_sort(nums)
    #shell_sort(nums)
    #merge_sort(nums)
-   quick_sort(nums)
+   #quick_sort(nums)
+   nums = [0] + nums
+   heap_sort(nums)
+   nums = nums[1:]
 
    print(nums)
    print(is_sorted(nums))
