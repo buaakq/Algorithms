@@ -14,6 +14,10 @@ def swap(nums, i, j):
    nums[i] = nums[j]
    nums[j] = tmp
 
+# N^2 compares, N exchanges (minimal data movement)
+# Sensitive to input data:
+# bad performance on sorted data (or data with all equal keys)
+# Stable sort
 def selection_sort(nums):
    if len(nums) <= 1:
       return
@@ -27,12 +31,9 @@ def selection_sort(nums):
             mIdx = j
       swap(nums, i, mIdx)
 
-def bubble_sort(nums):
-   for i in reversed(range(1, len(nums))):
-      for j in range(0, i):
-         if nums[j] > nums[j + 1]:
-            swap(nums, j, j + 1)
-
+# N^2 compares and exchanges
+# Linear time for sorted data / data with all equal keys
+# Stable sort
 def insertion_sort(nums):
    for i in range(1, len(nums)):
       for j in reversed(range(1, i+1)):
@@ -40,6 +41,32 @@ def insertion_sort(nums):
             swap(nums, j, j - 1)
          else:
             break
+
+# N^2 compares and exchanges
+# Sorted data: N^2 compares, 0 movements
+# Stable sort
+def bubble_sort(nums):
+   for i in reversed(range(1, len(nums))):
+      for j in range(0, i):
+         if nums[j] > nums[j + 1]:
+            swap(nums, j, j + 1)
+
+
+# Time: Nlog(N)
+# Not stable sort
+def shell_sort(nums):
+   k = 1
+   while k < len(nums) / 3:
+      k = k * 3 + 1
+
+   while k >= 1:
+     for i in range(k, len(nums)):
+        for j in reversed(range(k, i+1)):
+           if nums[j] < nums[j-k]:
+              swap(nums, j, j-k)
+           else:
+              break
+     k = k // 3
 
 # TODO
 def merge_sort(nums):
@@ -57,7 +84,7 @@ if __name__ == "__main__":
 
    #selection_sort(nums)
    #bubble_sort(nums)
-   insertion_sort(nums)
+   shell_sort(nums)
 
    print(nums)
    print(is_sorted(nums))
