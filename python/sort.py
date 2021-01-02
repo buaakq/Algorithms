@@ -20,7 +20,7 @@ def swap(nums, i, j):
 # N^2 compares, N exchanges (minimal data movement)
 # Sensitive to input data:
 # bad performance on sorted data (or data with all equal keys)
-# Stable sort
+# Not stable sort
 def selection_sort(nums):
    if len(nums) <= 1:
       return
@@ -148,6 +148,7 @@ def quick_sort(nums):
 # pros: fast, O(NlogN) time, O(1) space
 # cons: cannot leverage cache (swap data[k] and data[k * 2], which are far
 #       from each other
+# Not stable sort
 def heap_sort(nums):
    n = len(nums) - 1
    def sink(nums, k, N):
