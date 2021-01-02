@@ -106,9 +106,39 @@ def merge_sort(nums):
    nums_copy = nums[:]
    merge_sort_helper(nums, nums_copy, 0, len(nums)-1)
 
-# TODO
+
+# NlogN on average
+# N^2 worst case (random shuffling can prevent)
+# O(1) space
+# not stable sort
 def quick_sort(nums):
-   pass
+   def partition(nums, low, high):
+      val = nums[low]
+
+      i = low + 1
+      j = high
+
+      while True:
+         while nums[i] <= val and i <= j:
+            i += 1
+         while nums[j] > val and i <= j:
+            j -= 1
+
+         if i <= j:
+            swap(nums, i, j)
+         else:
+            break
+      swap(nums, low, j)
+      return j
+
+   def quick_sort_helper(nums, low, high):
+      if (low >= high):
+         return
+      idx = partition(nums, low, high)
+      quick_sort_helper(nums, low, idx-1)
+      quick_sort_helper(nums, idx+1, high)
+
+   quick_sort_helper(nums, 0, len(nums) - 1)
 
 
 if __name__ == "__main__":
@@ -119,7 +149,8 @@ if __name__ == "__main__":
    #selection_sort(nums)
    #bubble_sort(nums)
    #shell_sort(nums)
-   merge_sort(nums)
+   #merge_sort(nums)
+   quick_sort(nums)
 
    print(nums)
    print(is_sorted(nums))
