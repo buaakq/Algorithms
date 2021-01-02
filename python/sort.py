@@ -70,7 +70,39 @@ def shell_sort(nums):
 
 # TODO
 def merge_sort(nums):
-   pass
+   def merge(nums, copy, left, mid, right):
+      assert(mid <= right)
+      assert(mid >= left)
+      for i in range(left, right+1):
+         copy[i] = nums[i]
+
+      i = left
+      j = mid + 1
+
+      for k in range(left, right+1):
+         if i > mid:
+            nums[k] = copy[j]
+            j += 1
+         elif j > right:
+            nums[k] = copy[i]
+            i += 1
+         elif copy[i] > copy[j]:
+            nums[k] = copy[j]
+            j += 1
+         else:
+            nums[k] = copy[i]
+            i += 1
+
+   def merge_sort_helper(nums, copy, low, high):
+      if (low >= high):
+         return
+      mid = (high - low) // 2 + low
+      merge_sort_helper(nums, copy, low, mid)
+      merge_sort_helper(nums, copy, mid + 1, high)
+      merge(nums, copy, low, mid, high)
+
+   nums_copy = nums[:]
+   merge_sort_helper(nums, nums_copy, 0, len(nums)-1)
 
 # TODO
 def quick_sort(nums):
@@ -84,7 +116,8 @@ if __name__ == "__main__":
 
    #selection_sort(nums)
    #bubble_sort(nums)
-   shell_sort(nums)
+   #shell_sort(nums)
+   merge_sort(nums)
 
    print(nums)
    print(is_sorted(nums))
