@@ -74,74 +74,89 @@ def shell_sort(nums):
 # NlogN time complexity
 # N space complexity
 # Stable sort
-def merge_sort(nums):
-   def merge(nums, copy, left, mid, right):
-      assert(mid <= right)
-      assert(mid >= left)
-      for i in range(left, right+1):
-         copy[i] = nums[i]
 
-      i = left
-      j = mid + 1
+def merge(nums, copy, lo, mid, hi):
+   for i in range(lo, hi+1):
+      copy[i] = nums[i]
 
-      for k in range(left, right+1):
-         if i > mid:
-            nums[k] = copy[j]
-            j += 1
-         elif j > right:
-            nums[k] = copy[i]
-            i += 1
-         elif copy[i] > copy[j]:
-            nums[k] = copy[j]
-            j += 1
-         else:
-            nums[k] = copy[i]
-            i += 1
+   i = lo
+   j = mid + 1
 
-   def merge_sort_helper(nums, copy, low, high):
-      if (low >= high):
+   for idx in range(lo, hi+1):
+      if i > mid:
+         nums[idx] = copy[j]
+         j += 1
+      elif j > hi:
+         nums[idx] = copy[i]
+         i += 1
+      elif copy[i] > copy[j]:
+         nums[idx] = copy[j]
+         j += 1
+      else:
+         nums[idx] = copy[i]
+         i += 1
+
+def merge_sort_top_down(nums):
+   def merge_top_down_helper(nums, copy, lo, hi):
+      if lo >= hi:
          return
-      mid = (high - low) // 2 + low
-      merge_sort_helper(nums, copy, low, mid)
-      merge_sort_helper(nums, copy, mid + 1, high)
-      merge(nums, copy, low, mid, high)
+      mid = lo + (hi - lo) // 2
+      merge_top_down_helper(nums, copy, lo, mid)
+      merge_top_down_helper(nums, copy, mid + 1, hi)
+      merge(nums, copy, lo, mid, hi)
 
-   nums_copy = nums[:]
-   merge_sort_helper(nums, nums_copy, 0, len(nums)-1)
+   copy = nums[:]
+   merge_top_down_helper(nums, copy, 0, len(nums)-1)
 
+def merge_sort_bottom_up(nums):
+   copy = nums[:]
+   sz = 1
+   while sz < len(nums):
+      lo = 0
+      while lo + sz < len(nums):
+         merge(nums, copy, lo, lo + sz - 1, min(lo + sz + sz - 1, len(nums) - 1))
+         lo = lo + sz + sz
+      sz = sz * 2
 
 # NlogN on average
 # N^2 worst case (random shuffling can prevent)
 # O(1) space
 # not stable sort
+
+def partition(nums, lo, hi):
+   # TODO: randomly shuffle the data
+
+   pivot = nums[lo]
+
+   left = lo + 1
+   right = hi
+
+   while True:
+      while nums[left] <= pivot and left <= right:
+         left += 1
+
+      while nums[right] >= pivot and right >= left:
+         right -= 1
+
+      if left <= right:
+         swap(nums, left, right)
+      else:
+         break
+   swap(nums, lo, right)
+   return right
+
 def quick_sort(nums):
-   def partition(nums, low, high):
-      val = nums[low]
-
-      i = low + 1
-      j = high
-
-      while True:
-         while nums[i] <= val and i <= j:
-            i += 1
-         while nums[j] > val and i <= j:
-            j -= 1
-
-         if i <= j:
-            swap(nums, i, j)
-         else:
-            break
-      swap(nums, low, j)
-      return j
-
-   def quick_sort_helper(nums, low, high):
-      if (low >= high):
+   def quick_sort_helper(nums, lo, hi):
+      if lo >= hi:
          return
-      idx = partition(nums, low, high)
-      quick_sort_helper(nums, low, idx-1)
-      quick_sort_helper(nums, idx+1, high)
+      mid = partition(nums, lo, hi)
+      quick_sort_helper(nums, lo, mid - 1)
+      quick_sort_helper(nums, mid + 1, hi)
 
    quick_sort_helper(nums, 0, len(nums) - 1)
+
+
+
 
 # assuming nums has a padding nums[0], real data is in nums[1] ~ nums[N]
 # where N is number of read data, i.e., len(nums) - 1
@@ -177,11 +192,12 @@ if __name__ == "__main__":
    #selection_sort(nums)
    #bubble_sort(nums)
    #shell_sort(nums)
-   #merge_sort(nums)
-   #quick_sort(nums)
-   nums = [0] + nums
-   heap_sort(nums)
-   nums = nums[1:]
+   #merge_sort_top_down(nums)
+   #merge_sort_bottom_up(nums)
+   quick_sort(nums)
+   #nums = [0] + nums
+   #heap_sort(nums)
+   #nums = nums[1:]
 
    print(nums)
    print(is_sorted(nums))
