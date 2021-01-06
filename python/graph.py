@@ -31,9 +31,19 @@ class Graph:
             self.dfs_recursive(nextNode, visited)
       return visited
 
-   def bfs(self):
-      print("bfs the graph:")
-      pass
+   def bfs(self, start):
+      print("bfs:")
+      visited = set()
+      stack = [start]
+      while len(stack) > 0:
+         nextNode = stack.pop(0)
+         if nextNode not in visited:
+            # visit this node
+            print(nextNode)
+            visited.add(nextNode)
+            # add all child nodes which are not visited to the stack
+            stack.extend(self.graph[nextNode] - visited)
+      return visited
 
    def dfs_paths(self, start, goal):
       pass
@@ -51,5 +61,5 @@ if __name__ == "__main__":
 
    graph = Graph(graph_dict)
    #graph.dfs('A')
-   graph.dfs_recursive('A')
-   graph.bfs()
+   #graph.dfs_recursive('A')
+   graph.bfs('A')
