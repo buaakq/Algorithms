@@ -61,4 +61,22 @@ def quick_sort(nums):
 
    quick_sort_helper(nums, 0, len(nums) - 1)
 
+def heap_sort(nums):
+   n = len(nums) - 1
+   def sink(nums, k, N):
+      while k * 2 <= N:
+         j = k * 2
+         if j < N and nums[j] < nums[j + 1]:
+            j += 1
+         if nums[k] > nums[j]:
+            break
+         swap(nums, k, j)
+         k = j
 
+   for i in reversed(range(1, n//2+1)):
+      sink(nums, i, n)
+
+   while n > 1:
+      swap(nums, 1, n)
+      n -= 1
+      sink(nums, 1, n)

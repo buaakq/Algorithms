@@ -164,25 +164,37 @@ def quick_sort(nums):
 # cons: cannot leverage cache (swap data[k] and data[k * 2], which are far
 #       from each other
 # Not stable sort
+def sink(nums, k, sz):
+   N = sz
+
+   while True:
+      leftchild = k * 2
+      if leftchild > N:
+         break
+      rightchild = leftchild + 1
+      larger = leftchild
+      if rightchild < N and nums[leftchild] < nums[rightchild]:
+         larger = rightchild
+
+      if nums[k] >= nums[larger]:
+         break
+      swap(nums, k, larger)
+      k = larger
+
+
 def heap_sort(nums):
-   n = len(nums) - 1
-   def sink(nums, k, N):
-      while k * 2 <= N:
-         j = k * 2
-         if j < N and nums[j] < nums[j + 1]:
-            j += 1
-         if nums[k] > nums[j]:
-            break
-         swap(nums, k, j)
-         k = j
+   N = len(nums) - 1
+   # heapify the array
+   # k: N//2 --> 1
+   for k in reversed(range(1, len(nums)//2 + 1)):
+      sink(nums, k, N)
 
-   for i in reversed(range(1, n//2+1)):
-      sink(nums, i, n)
-
-   while n > 1:
-      swap(nums, 1, n)
-      n -= 1
-      sink(nums, 1, n)
+   # k: N --> 2
+   sz = N
+   for k in reversed(range(2, N+1)):
+      swap(nums, 1, k)
+      sz -= 1
+      sink(nums, 1, sz)
 
 if __name__ == "__main__":
    nums = [4,1,3,4,5,11,1,2, 10,111, 3, 6]
@@ -194,10 +206,10 @@ if __name__ == "__main__":
    #shell_sort(nums)
    #merge_sort_top_down(nums)
    #merge_sort_bottom_up(nums)
-   quick_sort(nums)
-   #nums = [0] + nums
-   #heap_sort(nums)
-   #nums = nums[1:]
+   #quick_sort(nums)
+   nums = [0] + nums
+   heap_sort(nums)
+   nums = nums[1:]
 
    print(nums)
    print(is_sorted(nums))
