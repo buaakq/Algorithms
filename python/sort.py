@@ -63,13 +63,16 @@ def shell_sort(nums):
       k = k * 3 + 1
 
    while k >= 1:
-     for i in range(k, len(nums)):
-        for j in reversed(range(k, i+1)):
-           if nums[j] < nums[j-k]:
-              swap(nums, j, j-k)
-           else:
-              break
-     k = k // 3
+      for i in range(k, len(nums)):
+         j = i
+         while j >= k:
+            if nums[j] < nums[j - k]:
+               swap(nums, j, j-k)
+               j -= k
+            else:
+               break
+
+      k = k // 3
 
 # NlogN time complexity
 # N space complexity
@@ -132,10 +135,10 @@ def partition(nums, lo, hi):
    right = hi
 
    while True:
-      while nums[left] <= pivot and left <= right:
+      while left <= right and nums[left] <= pivot:
          left += 1
 
-      while nums[right] >= pivot and right >= left:
+      while left <= right and nums[right] >= pivot:
          right -= 1
 
       if left <= right:
@@ -203,13 +206,13 @@ if __name__ == "__main__":
 
    #selection_sort(nums)
    #bubble_sort(nums)
-   #shell_sort(nums)
+   shell_sort(nums)
    #merge_sort_top_down(nums)
    #merge_sort_bottom_up(nums)
    #quick_sort(nums)
-   nums = [0] + nums
-   heap_sort(nums)
-   nums = nums[1:]
+   #nums = [0] + nums
+   #heap_sort(nums)
+   #nums = nums[1:]
 
    print(nums)
    print(is_sorted(nums))
